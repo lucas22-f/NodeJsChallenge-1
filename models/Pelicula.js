@@ -25,8 +25,7 @@ const Pelicula = sequelize.define("Pelicula",{
 },{
     timestamps:false,
 })
-
-Pelicula.belongsToMany(Personaje,{through:"pers_peli"});
-
+Pelicula.belongsToMany(Personaje,{through:"pers_peli"})
+Personaje.belongsToMany(Pelicula,{through:"pers_peli"})
 module.exports = Pelicula;
 

@@ -2,17 +2,16 @@ const express = require("express");
 const sequelize = require("./database/db");
 const app = express();
 const port = 3000;
-require("./models/Pelicula.js");
-require("./models/Personaje.js");
-require("./models/Genero.js");
-async function check(){
-        try {
+const router = require("./Router/router");
 
-        await sequelize.sync({ force: true })
+async function check(){
+         try {
+
+        await sequelize.sync({ force: false })
                 
         } catch (error) {
         console.error('Unable to connect to the database:', error);
-        }
+        } 
         
 }
 check();
@@ -20,7 +19,7 @@ check();
 app.get("/",(req,res)=>{
         res.send("<h1>Node JS Alkemy challenge by Lucas Figueroa.</h1>");
 })
-
+app.use(router);
 
 // catch 404;
 

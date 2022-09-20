@@ -5,7 +5,7 @@ const sequelize = require("../database/db");
 const Pelicula = require("./Pelicula");
 
 
-const Genero = sequelize.define("generos",{
+const Genero = sequelize.define("Genero",{
     id:{
         type:DataTypes.INTEGER,
         primaryKey:true,
@@ -23,6 +23,13 @@ const Genero = sequelize.define("generos",{
     timestamps:false,
 })
 
-Genero.hasMany(Pelicula)
+Pelicula.hasMany(Genero,{
+    foreignKey:"genPeliId",
+    sourceKey:"id"
+})
+Genero.belongsTo(Pelicula,{
+    foreignKey:"genPeliId",
+    targetId:"id"
+})
 
 module.exports = Genero;
