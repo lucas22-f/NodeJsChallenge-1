@@ -3,11 +3,11 @@ const { DataTypes } = require("sequelize");
 const sequelize = require("../database/db");
 const Genero = require("./genero");
 const Pelicula = require("./pelicula");
+const Movie_Character = require("./Movie_Character");
 
 
 
-
-let Personaje = sequelize.define("Personaje", {
+let Personaje = sequelize.define("personaje", {
 
   id: {
     type: DataTypes.INTEGER,
@@ -30,37 +30,11 @@ let Personaje = sequelize.define("Personaje", {
     type: DataTypes.STRING,
   }
 })
-Pelicula.hasMany(Personaje, {
-  foreignKey: "PeliculaId",
-  sourceKey: "id"
-})
-Personaje.belongsTo(Pelicula, {
-  foreignKey: "PeliculaId",
-  targetKey: "id"
 
-})
-
-Personaje.hasMany(Pelicula, {
-  foreignKey: "PersonajeId",
-  sourceKey: "id"
-})
-Pelicula.belongsTo(Personaje, {
-  foreignKey: "PersonajeId",
-  targetKey: "id"
-
-})
-
-Pelicula.hasMany(Genero, {
-  foreignKey: "PeliculaId",
-  targetKey: "id"
-})
-Genero.belongsTo(Pelicula, {
-  foreignKey: "PeliculaId",
-  targetKey: "id"
-})
-
-
-
+Personaje.hasMany(Movie_Character);
+Pelicula.hasMany(Movie_Character);
+Movie_Character.belongsTo(Personaje);
+Movie_Character.belongsTo(Pelicula);
 
 
 module.exports = Personaje;

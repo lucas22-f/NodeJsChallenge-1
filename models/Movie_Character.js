@@ -1,25 +1,16 @@
-
-
 const {DataTypes} = require("sequelize");
 const sequelize = require("../database/db");
 
 
-const Genero = sequelize.define("genero",{
+const Movie_Character = sequelize.define("movie_character",{
     id:{
         type:DataTypes.INTEGER,
         primaryKey:true,
         autoIncrement:true
     },
-    imagen:{
-        type:DataTypes.STRING
-    },
-    nombre:{
-        type:DataTypes.STRING
-    },
-  
 
 })
 
 
 
-module.exports = Genero;
+module.exports = Movie_Character;
