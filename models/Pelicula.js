@@ -1,10 +1,12 @@
-const {DataTypes} = require("sequelize");
-const sequelize = require("../database/db");
-const Personaje = require("./Personaje");
-
 
 //defino tabla Pelicula.
-const Pelicula = sequelize.define("Pelicula",{
+'use strict' 
+const { DataTypes } = require("sequelize");
+const sequelize = require("../database/db");
+
+
+
+  let Pelicula = sequelize.define("pelicula",{
     id:{
         type:DataTypes.INTEGER,
         primaryKey:true,
@@ -22,10 +24,9 @@ const Pelicula = sequelize.define("Pelicula",{
     calificacion:{
         type:DataTypes.INTEGER
     }
-},{
-    timestamps:false,
 })
-Pelicula.belongsToMany(Personaje,{through:"pers_peli"})
-Personaje.belongsToMany(Pelicula,{through:"pers_peli"})
-module.exports = Pelicula;
 
+
+
+
+module.exports = Pelicula;

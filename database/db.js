@@ -7,3 +7,5 @@ dialect: "mysql",
 
 module.exports = sequelize;
 
+
+

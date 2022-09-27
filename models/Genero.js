@@ -2,7 +2,6 @@
 
 const {DataTypes} = require("sequelize");
 const sequelize = require("../database/db");
-const Pelicula = require("./Pelicula");
 
 
 const Genero = sequelize.define("Genero",{
@@ -19,17 +18,8 @@ const Genero = sequelize.define("Genero",{
     },
   
 
-},{
-    timestamps:false,
 })
 
-Pelicula.hasMany(Genero,{
-    foreignKey:"genPeliId",
-    sourceKey:"id"
-})
-Genero.belongsTo(Pelicula,{
-    foreignKey:"genPeliId",
-    targetId:"id"
-})
+
 
 module.exports = Genero;
