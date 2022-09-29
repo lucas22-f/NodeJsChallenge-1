@@ -3,7 +3,8 @@
 'use strict' 
 const { DataTypes } = require("sequelize");
 const sequelize = require("../database/db");
-
+const Genero = require("./genero");
+const Movie_Character = require("./Movie_Character");
 
 
   let Pelicula = sequelize.define("pelicula",{
@@ -25,6 +26,9 @@ const sequelize = require("../database/db");
         type:DataTypes.INTEGER
     }
 })
+
+Pelicula.hasMany(Movie_Character);
+Movie_Character.belongsTo(Pelicula);
 
 
 

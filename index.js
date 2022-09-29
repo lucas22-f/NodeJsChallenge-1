@@ -31,20 +31,12 @@ app.get("/",(req,res)=>{
 
 
 // catch 404;
-
 app.use((req,res,next)=>{
         let err = new Error("no encontrado");
         err.status = 404;
-        next(err);
+        res.status(err.status).json({message: err.message});
 })
 
-//err handdler;
-app.use((err,res)=>{
-        if(!err.status){
-        err.status = 500;
-        }
-        res.status(err.status).json({status:err.status,message:err.message});
-})
 
 
 app.listen(port,(err)=>{
