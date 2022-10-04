@@ -1,3 +1,4 @@
 cpdf.pdf
 node_modules
 /database
+.env

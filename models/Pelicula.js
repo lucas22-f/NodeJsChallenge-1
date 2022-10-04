@@ -3,7 +3,7 @@
 'use strict' 
 const { DataTypes } = require("sequelize");
 const sequelize = require("../database/db");
-const Genero = require("./genero");
+const Genero = require("./Genero");
 const Movie_Character = require("./Movie_Character");
 
 
@@ -29,7 +29,8 @@ const Movie_Character = require("./Movie_Character");
 
 Pelicula.hasMany(Movie_Character);
 Movie_Character.belongsTo(Pelicula);
-
+Pelicula.hasMany(Genero)
+Genero.belongsTo(Pelicula);
 
 
 
