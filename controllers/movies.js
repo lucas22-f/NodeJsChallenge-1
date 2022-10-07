@@ -2,18 +2,28 @@ const Movie_Character = require("../models/Movie_Character");
 const Pelicula = require("../models/Pelicula");
 const Personaje = require("../models/personaje");
 const Genero = require("../models/Genero");
+let publicUrl = "http://localhost:3000"
 
-
-const getMovies = async (req, res) => {
+const getMovies = async (req, res, next) => {
   try {
     const data = await Pelicula.findAll();
-    res.json(data);
+    if(!data.length)throw new Error("No hay resultados / vacio")
+    let miData = data.map((el)=>{
+      const rta = {
+        imagen: el.imagen,
+        titulo: el.titulo,
+        fechaCrea: el.fechaCrea
+      }
+      return rta
+    })
+    res.json(miData);
+
   } catch (error) {
     return next(error);
   }
 };
 
-const getOneMovie = async (req, res) => {
+const getOneMovie = async (req, res, next) => {
   try {
     const id = req.params.id;
     const data = await Pelicula.findOne({
@@ -29,15 +39,17 @@ const getOneMovie = async (req, res) => {
         ],
       },
     });
+    if(!data) throw new Error("No hay resultados / vacio")
     res.json(data);
   } catch (error) {
     return next(error);
   }
 };
 
-const createMovie = async (req, res) => {
+const createMovie = async (req, res, next) => {
   try {
-    const data = { ...req.body };
+    const imagen = publicUrl+`/${req.file.filename}`;
+    const data = { ...req.body,imagen};
     const movie = await Pelicula.create(data);
     await Movie_Character.create({
       peliculaId: movie.id,
@@ -49,7 +61,7 @@ const createMovie = async (req, res) => {
   }
 };
 
-const deleteMovie = async (req, res) => {
+const deleteMovie = async (req, res , next) => {
   try {
     const data = await Pelicula.destroy({
       where: {
@@ -62,9 +74,11 @@ const deleteMovie = async (req, res) => {
   }
 };
 
-const updateMovie = async (req, res) => {
+const updateMovie = async (req, res, next) => {
   try {
-    let newData = { ...req.body };
+    const image = publicUrl+`/${req.file.filename}`;
+    let newData = { ...req.body , image};
+    
     let data = await Pelicula.findOne({
       where: {
         id: req.params.id,

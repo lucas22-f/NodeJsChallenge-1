@@ -1,5 +1,6 @@
 const express = require("express");
 const sequelize = require("./database/db");
+const { decode } = require("./middlewares/decodeJWT");
 const app = express();
 require("dotenv").config();
 const port = 3000;
@@ -16,8 +17,11 @@ check();
 app.use(express.json()); //config json 
 app.use(express.urlencoded({ extended: false }));
 
-app.use("/auth", require("./Router/usersRoute"));// auth route para obtener nuestro token e ingresar a la api
-app.use("/", require("./Router/router"));//router de la api
+app.use(express.static("static"));
+
+app.use("/auth/", require("./Router/usersRoute"));// auth route para obtener nuestro token e ingresar a la api 
+app.use("/",decode ,require("./Router/router"));//router de la api
+
 
 
 app.listen(port, (err) => {

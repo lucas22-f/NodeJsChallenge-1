@@ -1,4 +1,4 @@
 cpdf.pdf
 node_modules
-/database
+/static
 .env
