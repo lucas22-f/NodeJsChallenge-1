@@ -6,9 +6,28 @@ let publicUrl = "http://localhost:3000" // url que utilizaremos para guardar las
 
 const getCharacters = async (req, res, next) => {
   try {
-    const data = await Personaje.findAll();
+    let data = await Personaje.findAll();
     if(!data.length)throw new Error("No hay Resultados / vacio")
-    
+    if(req.query.name){
+       data = await Personaje.findAll({where:{nombre:req.query.name}})
+    }
+    if(req.query.age){
+      data = await Personaje.findAll({where:{edad:req.query.age}})
+    }
+    if(req.query.movies){
+      let querydata = await Personaje.findAll({
+        include:[{
+          model:Movie_Character,
+          include:[{
+            model:Pelicula,
+            where:{
+              id:req.query.movies
+            }
+          }]
+        }]
+      })
+      res.json(querydata)
+    }
     const miData = data.map((el)=>{
       let rta = {
         nombre:el.nombre,
