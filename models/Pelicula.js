@@ -29,8 +29,8 @@ const Movie_Character = require("./Movie_Character");
 
 Pelicula.hasMany(Movie_Character);
 Movie_Character.belongsTo(Pelicula);
-Pelicula.hasMany(Genero)
-Genero.belongsTo(Pelicula);
+Genero.hasMany(Pelicula)
+Pelicula.belongsTo(Genero);
 
 
 

@@ -1,6 +1,10 @@
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const sgMail = require('@sendgrid/mail')
+
+
+
 require("dotenv").config;
 const getUsers = async (req, res ,next) => {
   try {
@@ -31,12 +35,31 @@ const registerUser = async (req, res, next) => {
     const password = await bcrypt.hashSync(req.body.password, 10)
     const data = { ...req.body, password };
     const user = await User.create(data);
+
+
+    
+    sgMail.setApiKey(process.env.SENDGRID_API_KEY)
+    const msg = {
+      to: `${user.email}`, // Change to your recipient
+      from: 'lucas.200061@gmail.com', // Change to your verified sender
+      subject: 'TE damos la bienvenida a disneyAPI',
+      text: 'gracias por registrarte en el sistema de disneyAPI',
+      html: '<strong> Ojalá que todas nuestras funciones esten a tu servicio. </strong>',
+    }
+    let emailSend
+     sgMail.send(msg).then(emailSend ="enviado").catch((err)=> console.log(err))
+
+
+
     res.json({
       message:"User Registered",
       id:user.id,
+      emailSend:emailSend,
       token:jwt.sign({id:user.id},process.env.jwtkey, { expiresIn: "1h" })
 
     }); 
+
+
 
 
   } catch (error) {

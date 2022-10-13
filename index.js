@@ -3,7 +3,9 @@ const sequelize = require("./database/db");
 const { decode } = require("./middlewares/decodeJWT");
 const app = express();
 require("dotenv").config();
+const cors = require("cors");
 const port = 3000;
+app.use(cors())
 
 async function check() { // funcion para verificar conexion con la bd
         try {

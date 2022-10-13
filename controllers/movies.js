@@ -6,11 +6,11 @@ let publicUrl = "http://localhost:3000"
 
 const getMovies = async (req, res, next) => {
   try {
-    const data = await Pelicula.findAll();
+    let data = await Pelicula.findAll();
     if (!data.length) throw new Error("No hay resultados / vacio")
 
     if (req.query.name) {
-      data = await Pelicula.findAll({ where: { nombre: req.query.name } })
+      data = await Pelicula.findAll({ where: { titulo: req.query.name } })
     }
     if (req.query.genre) {
       data = await Pelicula.findAll({ where: { generoId: req.query.genre } })
@@ -18,30 +18,51 @@ const getMovies = async (req, res, next) => {
     if (req.query.order == 'ASC') {
       let data = await Pelicula.findAll()
       let querydata = data.map((el) => {
-        let rta = el.titulo
+        let rta = {
+          id:el.id,
+          titulo:el.titulo,
+          imagen:el.imagen,
+          fechaCrea: el.fechaCrea
+        }
         return rta
-      }).sort();
+      });
+      querydata.sort((a,b)=>{
+        return (a.titulo.toLowerCase().localeCompare(b.titulo.toLowerCase()))
+      });
+     
+      
       res.json(querydata)
-    }
+    }else
     if (req.query.order == 'DESC') {
       let data = await Pelicula.findAll()
       let querydata = data.map((el) => {
-        let rta = el.titulo
+        let rta = {
+          id:el.id,
+          titulo:el.titulo,
+          imagen:el.imagen,
+          fechaCrea: el.fechaCrea
+        }
         return rta
-      }).sort().reverse();
+      })
+      querydata.sort((a,b)=>{
+        return (b.titulo.toLowerCase().localeCompare(a.titulo.toLowerCase()))
+      });
       res.json(querydata)
+    }else{
+      let miData = data.map((el) => {
+        const rta = {
+          imagen: el.imagen,
+          titulo: el.titulo,
+          fechaCrea: el.fechaCrea
+        }
+        return rta
+      })
+      if(!data.length)throw new Error("vacio");
+      res.json(miData);
     }
 
 
-    let miData = data.map((el) => {
-      const rta = {
-        imagen: el.imagen,
-        titulo: el.titulo,
-        fechaCrea: el.fechaCrea
-      }
-      return rta
-    })
-    res.json(miData);
+    
 
   } catch (error) {
     return next(error);
@@ -62,7 +83,9 @@ const getOneMovie = async (req, res, next) => {
             model: Personaje,
           },
         ],
-      },
+        
+      }
+      
     });
     if (!data) throw new Error("No hay resultados / vacio")
     res.json(data);

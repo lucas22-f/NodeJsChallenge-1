@@ -26,17 +26,20 @@ const getCharacters = async (req, res, next) => {
           }]
         }]
       })
-      res.json(querydata)
+      res.json(querydata).status(200);
+    }else{
+      const miData = data.map((el)=>{
+        let rta = {
+          nombre:el.nombre,
+          imagen:el.imagen
+        }
+        return rta;
+      })
+      
+      res.json(miData);
+
     }
-    const miData = data.map((el)=>{
-      let rta = {
-        nombre:el.nombre,
-        imagen:el.imagen
-      }
-      return rta;
-    })
     
-    res.json(miData);
   } catch (error) {
     return next(error);
   }
@@ -70,10 +73,8 @@ const getOneCharacter = async (req, res, next) => {
 
 const createCharacter = async (req, res, next) => {
   try {
-   console.log("llego a este lugar")
     const imagen = publicUrl+`/${req.file.filename}`;
     const data = { ...req.body,imagen};
-    console.log(data);
     const character = await Personaje.create(data);
     await Movie_Character.create({
       personajeId: character.id,
