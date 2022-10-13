@@ -3,7 +3,7 @@ const { DataTypes } = require("sequelize");
 const sequelize = require("../database/db");
 const Movie_Character = require("./Movie_Character");
 
-
+//CREAMOS LOS MODELOS PARA LA BASE DE DATOS:
 
 let Personaje = sequelize.define("personaje", {
 

@@ -3,7 +3,7 @@
 const {DataTypes} = require("sequelize");
 const sequelize = require("../database/db");
 
-
+//CREAMOS LOS MODELOS PARA LA BASE DE DATOS:
 
 const Genero = sequelize.define("genero",{
     id:{

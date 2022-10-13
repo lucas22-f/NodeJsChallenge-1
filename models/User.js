@@ -1,5 +1,8 @@
 const sequelize =  require("../database/db");
 const {DataTypes} = require("sequelize");
+
+//CREAMOS LOS MODELOS PARA LA BASE DE DATOS:
+
 const User = sequelize.define( "usuarios",{
     id:{
         type: DataTypes.INTEGER,

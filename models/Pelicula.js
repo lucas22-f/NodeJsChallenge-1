@@ -6,6 +6,7 @@ const sequelize = require("../database/db");
 const Genero = require("./Genero");
 const Movie_Character = require("./Movie_Character");
 
+//CREAMOS LOS MODELOS PARA LA BASE DE DATOS:
 
   let Pelicula = sequelize.define("pelicula",{
     id:{

@@ -2,54 +2,19 @@ const Movie_Character = require("../models/Movie_Character");
 const Pelicula = require("../models/Pelicula");
 const Personaje = require("../models/personaje");
 const Genero = require("../models/Genero");
+const {moviesQueryHandler} = require("../utils/queryParams");
 let publicUrl = "http://localhost:3000"
 
-const getMovies = async (req, res, next) => {
+const getMovies = async (req, res, next) => { //funcion get para Lista de Peliculas
   try {
     let data = await Pelicula.findAll();
     if (!data.length) throw new Error("No hay resultados / vacio")
-
-    if (req.query.name) {
-      data = await Pelicula.findAll({ where: { titulo: req.query.name } })
-    }
-    if (req.query.genre) {
-      data = await Pelicula.findAll({ where: { generoId: req.query.genre } })
-    }
-    if (req.query.order == 'ASC') {
-      let data = await Pelicula.findAll()
-      let querydata = data.map((el) => {
-        let rta = {
-          id:el.id,
-          titulo:el.titulo,
-          imagen:el.imagen,
-          fechaCrea: el.fechaCrea
-        }
-        return rta
-      });
-      querydata.sort((a,b)=>{
-        return (a.titulo.toLowerCase().localeCompare(b.titulo.toLowerCase()))
-      });
-     
-      
-      res.json(querydata)
-    }else
-    if (req.query.order == 'DESC') {
-      let data = await Pelicula.findAll()
-      let querydata = data.map((el) => {
-        let rta = {
-          id:el.id,
-          titulo:el.titulo,
-          imagen:el.imagen,
-          fechaCrea: el.fechaCrea
-        }
-        return rta
-      })
-      querydata.sort((a,b)=>{
-        return (b.titulo.toLowerCase().localeCompare(a.titulo.toLowerCase()))
-      });
-      res.json(querydata)
+    if(req.query){
+      let queryData = await moviesQueryHandler(req,res,next); // funcion que maneja los parametros por query !
+      res.json(queryData);
+    
     }else{
-      let miData = data.map((el) => {
+      let miData = data.map((el) => { // modificamos forma de enviar los datos
         const rta = {
           imagen: el.imagen,
           titulo: el.titulo,
@@ -57,30 +22,26 @@ const getMovies = async (req, res, next) => {
         }
         return rta
       })
-      if(!data.length)throw new Error("vacio");
       res.json(miData);
     }
-
-
-    
 
   } catch (error) {
     return next(error);
   }
 };
 
-const getOneMovie = async (req, res, next) => {
+const getOneMovie = async (req, res, next) => { // funcion get para obtener 1 Pelicula
   try {
     const id = req.params.id;
     const data = await Pelicula.findOne({
       where: {
         id: id,
       },
-      include: {
+      include: { // incluimos relacion para mostrar datos de las tablas relacionadas.
         model: Movie_Character,
         include: [
           {
-            model: Personaje,
+            model: Personaje,//mostramo tabla relacionada
           },
         ],
         
@@ -94,7 +55,7 @@ const getOneMovie = async (req, res, next) => {
   }
 };
 
-const createMovie = async (req, res, next) => {
+const createMovie = async (req, res, next) => {//funcion post para crear 1 Pelicula
   try {
     const imagen = publicUrl + `/${req.file.filename}`;
     const data = { ...req.body, imagen };
@@ -109,7 +70,7 @@ const createMovie = async (req, res, next) => {
   }
 };
 
-const deleteMovie = async (req, res, next) => {
+const deleteMovie = async (req, res, next) => {//funcion delete para borrar 1 Pelicula
   try {
     const data = await Pelicula.destroy({
       where: {
@@ -122,7 +83,7 @@ const deleteMovie = async (req, res, next) => {
   }
 };
 
-const updateMovie = async (req, res, next) => {
+const updateMovie = async (req, res, next) => {// funcion put para modificar 1 Pelicula
   try {
     const image = publicUrl + `/${req.file.filename}`;
     let newData = { ...req.body, image };
