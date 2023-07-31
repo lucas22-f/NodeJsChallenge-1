@@ -1,4 +1,5 @@
 cpdf.pdf
 node_modules
 /static
+.env
 
